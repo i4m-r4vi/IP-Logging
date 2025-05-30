@@ -1,23 +1,29 @@
 const express = require('express');
+const os = require('os');
+
 const app = express();
+const PORT = 3000;
 
-app.use((req,res,next)=>{
-    console.log(`${req.ip}`);
-    next();
-})
+app.get('/', (req, res) => {
+  const interfaces = os.networkInterfaces();
+  const ip = [];
 
-
-app.get('/',(req,res)=>{
-    try {
-        res.send(`
-            <p>Welcome To Logging</p>`)
-    } catch (error) {
-        console.log("Something error in Home");
-        res.status(404).json({message:"You are not"})
+  for (const name in interfaces) {
+    for (const iface of interfaces[name]) {
+      if (iface.family === 'IPv4' && !iface.internal) {
+        ip.push(iface.address);
+      }
     }
-})
+  }
 
+  if (ip.length === 0) {
+    return res.json({ message: 'No local IP addresses found' });
+  }
 
-app.listen(3000,()=>{
-    console.log("The port is Listening on 3000")
-})
+  console.log({ localIPs: ip });
+  res.status(200).send("Welcome")
+});
+
+app.listen(PORT, () => {
+  console.log(`Server running on http://localhost:${PORT}`);
+});
