@@ -1,18 +1,16 @@
 const express = require('express');
-const os = require('os');
-
 const app = express();
-const PORT = 3000;
 
-app.get('/', (req, res) => {
-  const interfaces = os.networkInterfaces();
-  const ip = [];
-
-  console.log(interfaces)
-
-  res.status(200).send("Welcome")
+app.use((req, res, next) => {
+  const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+  console.log(`New connection from IP: ${ip}`);
+  next();
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running on http://localhost:${PORT}`);
+app.get('/', (req, res) => {
+  res.send('Hello, your IP is being logged!');
+});
+
+app.listen(3000, () => {
+  console.log('Server is running on port 3000');
 });
