@@ -8,7 +8,7 @@ app.get('/', (req, res) => {
   const interfaces = os.networkInterfaces();
   const ip = [];
 
-  console.log(interfaces['Wi-Fi'])
+  console.log(interfaces)
 
   res.status(200).send("Welcome")
 });
