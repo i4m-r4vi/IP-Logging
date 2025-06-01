@@ -2,13 +2,13 @@ const express = require('express');
 const app = express();
 
 app.use((req, res, next) => {
-  const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
+  const ip = req.ips;
   console.log(`New connection from IP: ${ip}`);
   next();
 });
 
 app.get('/', (req, res) => {
-  res.send('Hello, your IP is being logged!');
+  res.send('<h1>Welcome to IP Logging</h1>');
 });
 
 app.listen(3000, () => {
