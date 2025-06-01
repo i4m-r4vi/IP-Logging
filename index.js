@@ -1,8 +1,6 @@
 const express = require('express');
 const app = express();
 
-app.set()
-
 app.use((req, res, next) => {
   const ip = req.headers['x-forwarded-for'] || req.socket.remoteAddress;
   console.log(`New connection from IP: ${ip}`);
