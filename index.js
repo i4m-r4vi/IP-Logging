@@ -1,8 +1,9 @@
 const express = require('express');
 const app = express();
 
+
 app.use((req, res, next) => {
-  const ip = req.ips;
+  const ip = req.ip;
   console.log(`New connection from IP: ${ip}`);
   next();
 });
